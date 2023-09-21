@@ -7,7 +7,7 @@ const { body, validationResult } = require("express-validator");
 router.get("/fetchallposts", fetchuser, async (req, res) => {
   try {
     const posts = await Post.find()
-      .populate("postedBy", "_id name")
+      .populate("postedBy", "_id name profilePic")
       .populate("likes", "name")
       .populate("comments.userId", "name");
     res.json(posts);
@@ -20,7 +20,7 @@ router.get("/fetchallposts", fetchuser, async (req, res) => {
 router.get("/fetchmyposts", fetchuser, async (req, res) => {
   try {
     const posts = await Post.find({ postedBy: req.user.id })
-      .populate("postedBy", "_id name")
+      .populate("postedBy", "_id name profilePic")
       .populate("likes", "name")
       .populate("comments.userId", "name");
     res.json(posts);
@@ -89,12 +89,12 @@ router.put("/likes", fetchuser, async (req, res) => {
 router.put("/addcomment", fetchuser, async (req, res) => {
   const { postId, comment } = req.body;
   try {
-    let post = await Post.find({ _id: postId });
-    post = await Post.findByIdAndUpdate(
+    let post = await Post.findByIdAndUpdate(
       postId,
       { $push: { comments: { userId: req.user.id, comment: comment } } },
       { new: true }
     );
+    console.log(post);
     res.json(post);
   } catch (error) {
     console.error(error.message);
@@ -102,21 +102,14 @@ router.put("/addcomment", fetchuser, async (req, res) => {
   }
 });
 
-router.delete("/deletenote/:id", fetchuser, async (req, res) => {
+router.delete("/deletepost/:id", fetchuser, async (req, res) => {
   try {
-    // Find the note to be delete and delete it
-    let note = await Note.findById(req.params.id);
-    if (!note) {
-      return res.status(404).send("Not Found");
-    }
-
-    // Allow deletion only if user owns this Note
-    if (note.user.toString() !== req.user.id) {
+    let post = await Post.findById(req.params.id);
+    if (post.postedBy.toString() !== req.user.id) {
       return res.status(401).send("Not Allowed");
     }
-
-    note = await Note.findByIdAndDelete(req.params.id);
-    res.json({ Success: "Note has been deleted", note: note });
+    post = await Post.findByIdAndDelete(req.params.id);
+    res.json({ Success: "Post has been deleted", post: post });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");

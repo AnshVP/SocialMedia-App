@@ -13,7 +13,7 @@ const UserData = (props) => {
       },
     });
     const data = await response.json();
-    setUserData({_id:data._id,name:data.name});
+    setUserData(data);
   };
 
   return (

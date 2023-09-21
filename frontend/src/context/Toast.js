@@ -8,11 +8,10 @@ const Toast = (props) => {
       text: msg,
       className: "info",
       style: {
-        color:"black",
-        border:"1px solid green",
-        boxShadow:"0 0 5px #0b2b06",
-        background: "#e1f1df",
-        fontSize: "21px",
+        color:"white",
+        background: "#10d52a",
+        fontFamily: "'Roboto Slab', serif",
+        fontSize: "20px",
         width: "30vw",
         textAlign: "center",
         postion: "absolute",
@@ -20,13 +19,15 @@ const Toast = (props) => {
         borderRadius: "3px",
       },
     }).showToast();
+    
   const error = (msg) =>
     Toastify({
       text: msg,
       className: "info",
       style: {
         background: "#fc1111",
-        fontSize: "21px",
+        fontFamily: "'Roboto Slab', serif",
+        fontSize: "20px",
         width: "30vw",
         textAlign: "center",
         postion: "absolute",

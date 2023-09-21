@@ -9,7 +9,7 @@ const { default: mongoose } = require("mongoose");
 
 const JWT_SECRET = "heyansh";
 
-router.get("/",fetchuser,async (req, res) => {
+router.get("/", fetchuser, async (req, res) => {
   const keyword = req.query.search
     ? {
         $or: [
@@ -18,7 +18,7 @@ router.get("/",fetchuser,async (req, res) => {
         ],
       }
     : {};
-    console.log(keyword)
+  console.log(keyword);
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user.id } });
   res.send(users);
@@ -44,19 +44,26 @@ router.post(
     }
 
     try {
-      let user = await User.findOne({ email: req.body.email.toLowerCase() });
-      if (user) {
+      let user = await User.find({
+        $or: [
+          { email: req.body.email.toLowerCase() },
+          { name: req.body.name.toLowerCase() },
+        ],
+      });
+
+      if (user.length !== 0) {
         success = false;
-        return res
-          .status(400)
-          .json({ success, msg: "User with this email already exists" });
+        return res.status(400).json({
+          success,
+          msg: "User with this email or name already exists",
+        });
       }
 
       const salt = await bcryptjs.genSalt(10);
       const secPass = await bcryptjs.hash(req.body.password, salt);
 
       user = await User.create({
-        name: req.body.name,
+        name: req.body.name.toLowerCase(),
         password: secPass,
         email: req.body.email.toLowerCase(),
       });
@@ -115,12 +122,18 @@ router.post(
 router.get("/getdata", fetchuser, async (req, res) => {
   try {
     const id = req.user.id;
-    const user = await User.findById(id).select("-password");
+    const user = await User.findById(id)
+      .select("-password")
+      .populate("followers", "_id name")
+      .populate("followings", "_id name")
+      .populate("requests", "_id name profilePic")
+      .populate("requested", "_id name");
     res.send(user);
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Some Internal Server Error occured!!");
   }
 });
+
 
 module.exports = router;

@@ -10,7 +10,7 @@ export const NavTop = (props) => {
   };
   return (
     <>
-      <header>
+      <header style={{zIndex:"100"}}>
         <div className="navigation">
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">

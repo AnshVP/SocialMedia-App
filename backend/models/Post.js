@@ -10,6 +10,7 @@ const PostSchema = new Schema({
     type: String,
     required: true,
   },
+  profilePic: { type: String },
   photo: {
     type: String,
     required: true,
@@ -20,7 +21,10 @@ const PostSchema = new Schema({
     ref: "user",
   },
   comments: [
-    { userId: {type: mongoose.Schema.Types.ObjectId, ref: "user"},comment:{type: String} },
+    {
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+      comment: { type: String },
+    },
   ],
 });
 

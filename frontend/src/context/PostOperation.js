@@ -43,8 +43,19 @@ const PostOperation = (props) => {
     getPosts();
   };
 
+  const deletePost = async (postId) => {
+    await fetch(`http://localhost:5000/api/post/deletepost/${postId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+    });
+    getPosts();
+  };
+
   return (
-    <PostContext.Provider value={{ posts, getPosts, editLikes, addComment }}>
+    <PostContext.Provider value={{ posts, getPosts, editLikes, addComment, deletePost }}>
       {props.children}
     </PostContext.Provider>
   );

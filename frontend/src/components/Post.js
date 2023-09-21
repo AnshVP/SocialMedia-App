@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
-import img from "../img/img2.png";
+import noProfile from "../img/noProfile.png";
 import "../css/Post.css";
 import { PostContext, UserContext } from "../context/MyContext";
 
 export const Post = (props) => {
-  const { postData, font, postWidth, imageHeight, heart, likedBy } = props;
+  const { postData, font, postWidth, imageHeight, heart, likedBy, profilePic } = props;
   const { userData } = useContext(UserContext);
   const { addComment } = useContext(PostContext);
   const [comment, setComment] = useState();
@@ -14,7 +14,7 @@ export const Post = (props) => {
       <div className="post mx-2" style={{ width: postWidth, fontSize: font }}>
         <div className="header" style={{ position: "relative" }}>
           <img
-            src={img}
+            src={profilePic || noProfile}
             className="rounded-circle"
             width="10%"
             height="10%"
@@ -69,7 +69,7 @@ export const Post = (props) => {
         <div
           className="modal fade"
           id={`modal${postData._id}`}
-          tabindex="-1"
+          tabIndex="-1"
           aria-labelledby={`modal${postData._id}label`}
           aria-hidden="true"
         >
@@ -103,7 +103,7 @@ export const Post = (props) => {
                   />
                   <span
                     style={{ cursor: "pointer", fontSize: "25px" }}
-                    onClick={() => addComment(comment, userData._id)}
+                    onClick={() => addComment(postData._id,comment)}
                     className="mx-3"
                   >
                     <i className="fa-solid fa-paper-plane"></i>
