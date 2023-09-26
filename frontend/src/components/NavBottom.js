@@ -14,7 +14,7 @@ export const NavBottom = () => {
     const chat = document.getElementById("chat");
     const post = document.getElementById("addpost");
     const news = document.getElementById("news");
-    const navs = [search,home, profile, chat, post, news];
+    const navs = [search, home, profile, chat, post, news];
     list.forEach((li) => li.classList.remove("active"));
     if (location.pathname === "/") {
       home.classList.add("active");

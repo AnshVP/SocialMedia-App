@@ -48,13 +48,14 @@ export const Profile = () => {
       if (imageUrl) {
         async function editProfile() {
           const response = await fetch(
-            `http://localhost:5000/api/user/editprofile/${imageUrl}`,
+            `http://localhost:5000/api/user/editprofile`,
             {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",
                 "auth-token": localStorage.getItem("token"),
               },
+              body: JSON.stringify({ profilePic: imageUrl }),
             }
           );
           const json = await response.json();
@@ -64,9 +65,9 @@ export const Profile = () => {
             error(json.errors[0].msg);
           }
         }
-        editProfile();    
+        editProfile();
       }
-      setImageUrl("")
+      setImageUrl("");
       getUser();
       const fetchposts = async () => {
         const response = await fetch(
@@ -151,7 +152,7 @@ export const Profile = () => {
               <div className="text-center">
                 <div>
                   <strong>
-                    {userData.followers && userData.followers.length}
+                    {userData.followings && userData.followings.length}
                   </strong>
                 </div>
                 <strong>Following</strong>

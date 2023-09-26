@@ -5,7 +5,7 @@ const fetchuser = require("../middleware/fetchuser");
 
 router.get("/getrecommendedusers", fetchuser, async (req, res) => {
   try {
-    const users = await User.find({followers:{$ne: req.user.id}}).select("-password");
+    const users = await User.find({followers:{$ne: req.user.id},_id:{$ne: req.user.id}}).select("-password");
     res.send(users);
   } catch (error) {
     console.error(error.message);

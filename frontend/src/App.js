@@ -14,6 +14,7 @@ import UserData from "./context/UserData";
 import PostOperation from "./context/PostOperation";
 import FollowRequest from "./context/FollowRequest";
 import { Search } from "./components/Search";
+import { Chat } from "./components/Chat";
 
 function App() {
   const api_key = process.env.REACT_APP_NEWS_API;
@@ -29,13 +30,14 @@ function App() {
             <BrowserRouter>
               <Background />
               <NavTop />
-
+              
               <Routes>
                 <Route exact path="/" element={<Home />} />
                 <Route exact path="/search" element={<Search />} />
                 <Route exact path="/signin" element={<SignIn />} />
                 <Route exact path="/signup" element={<SignUp />} />
                 <Route exact path="/profile" element={<Profile />} />
+                <Route exact path="/chat" element={<Chat />} />
                 <Route exact path="/addpost" element={<CreatePost />} />
                 <Route
                   exact
