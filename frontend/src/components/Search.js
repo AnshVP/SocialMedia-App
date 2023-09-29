@@ -29,7 +29,7 @@ export const Search = () => {
       getAllUsers();
       getUser();
     }
-  }, []);
+  }, [allUsers]);
 
   return (
     <div className="d-flex flex-column">
@@ -69,9 +69,9 @@ export const Search = () => {
                   <button
                     className="btn btn-primary btn-sm mt-1"
                     onClick={() => {
-                      userData.followers.filter((follower) => {
-                        return follower._id === user._id;
-                      }).length === 1 ? unFollow(user._id ):
+                      userData.followings.filter((following) => {
+                        return following._id === user._id;
+                      }).length === 1 ? unFollow(user._id):
                       addRequest(user._id);
                     }}
                     style={
@@ -87,8 +87,8 @@ export const Search = () => {
                         return requestId._id === userData._id;
                       }).length === 1
                         ? "Requested"
-                        : userData.followers.filter((follower) => {
-                            return follower._id === user._id;
+                        : userData.followings.filter((following) => {
+                            return following._id === user._id;
                           }).length === 1 ? "unfollow" : "follow"}
                     </strong>
                   </button>

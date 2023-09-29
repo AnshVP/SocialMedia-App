@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../css/Sign.css";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContext } from "../context/MyContext";
 
 export const SignUp = () => {
+  const context = useContext(ToastContext);
+  const { error, success } = context;
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
@@ -26,11 +29,12 @@ export const SignUp = () => {
     });
     const json = await response.json();
     if (json.success) {
+
       localStorage.setItem("token", json.authtoken);
       navigate("/");
-      console.log("success");
+      success("Account Successfully Created!!");
     } else {
-      console.log("fail");
+      error(json.errors[0].msg);
     }
   };
   return (
@@ -41,7 +45,15 @@ export const SignUp = () => {
             <div className="logo" style={{ color: "white" }}>
               Let'sConnect
             </div>
-            <div style={{color:"rgb(255, 0, 162)",fontSize:"30px",fontWeight:"500"}}>Sign Up</div>
+            <div
+              style={{
+                color: "rgb(255, 0, 162)",
+                fontSize: "30px",
+                fontWeight: "500",
+              }}
+            >
+              Sign Up
+            </div>
 
             <div className="form">
               <div className="inputBox">
@@ -49,7 +61,13 @@ export const SignUp = () => {
                 <i>Email</i>
               </div>
               <div className="inputBox">
-                <input type="text" name="name" onChange={onChange} minLength={3} required />
+                <input
+                  type="text"
+                  name="name"
+                  onChange={onChange}
+                  minLength={3}
+                  required
+                />
                 <i>Username</i>
               </div>
               <div className="inputBox">
@@ -63,7 +81,11 @@ export const SignUp = () => {
                 <i>Password</i>
               </div>
               <div className="inputBox">
-                <input type="submit" onClick={handleClick} value="Create Account" />
+                <input
+                  type="submit"
+                  onClick={handleClick}
+                  value="Create Account"
+                />
               </div>
             </div>
 

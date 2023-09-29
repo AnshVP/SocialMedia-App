@@ -6,6 +6,7 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const fetchuser = require("../middleware/fetchuser");
 const { default: mongoose } = require("mongoose");
+const axios = require("axios");
 
 const JWT_SECRET = "heyansh";
 
@@ -67,6 +68,30 @@ router.post(
         password: secPass,
         email: req.body.email.toLowerCase(),
       });
+
+      var user_data = {
+        username: user.name,
+        secret: user._id,
+        email: user.email,
+        first_name: user.name
+      };
+
+      var config = {
+        method: "post",
+        url: "https://api.chatengine.io/users/",
+        headers: {
+          "PRIVATE-KEY": "a1936ee1-059e-45ec-8da9-fa213a6e1984",
+        },
+        data: user_data,
+      };
+
+      axios(config)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
       const data = { user: { id: user.id } };
       const authtoken = jwt.sign(data, JWT_SECRET);
@@ -134,6 +159,5 @@ router.get("/getdata", fetchuser, async (req, res) => {
     res.status(500).send("Some Internal Server Error occured!!");
   }
 });
-
 
 module.exports = router;

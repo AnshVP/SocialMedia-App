@@ -40,7 +40,7 @@ router.post(
   ],
   async (req, res) => {
     try {
-      const { photo, caption, location } = req.body;
+      const { photo, caption, location, postedOn } = req.body;
       // If there are errors, return Bad request and the errors
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -51,6 +51,7 @@ router.post(
         location,
         caption,
         photo,
+        postedOn,
         postedBy: req.user.id,
       });
       const savedPost = await post.save();

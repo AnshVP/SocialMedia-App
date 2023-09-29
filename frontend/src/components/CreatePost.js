@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../css/CreatePost.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
 import {ToastContext} from "../context/MyContext";
 
 export const CreatePost = () => {
@@ -16,6 +16,7 @@ export const CreatePost = () => {
     if (imageUrl) {
       async function postData() {
         console.log(location);
+        const date = new Date
         const response = await fetch(
           "http://localhost:5000/api/post/createpost",
           {
@@ -28,6 +29,7 @@ export const CreatePost = () => {
               photo: imageUrl,
               caption: caption,
               location: location,
+              postedOn: date.toLocaleString()
             }),
           }
         );

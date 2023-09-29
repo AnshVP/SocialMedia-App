@@ -4,8 +4,8 @@ import "../css/Post.css";
 import { PostContext, UserContext } from "../context/MyContext";
 
 export const Post = (props) => {
-  const { postData, font, postWidth, imageHeight, heart, likedBy, profilePic } = props;
-  const { userData } = useContext(UserContext);
+  const { postData, font, postWidth, imageHeight, heart, likedBy, profilePic } =
+    props;
   const { addComment } = useContext(PostContext);
   const [comment, setComment] = useState();
 
@@ -16,13 +16,12 @@ export const Post = (props) => {
           <img
             src={profilePic || noProfile}
             className="rounded-circle"
-            width="10%"
-            height="10%"
+            style={{ width: "10%", height: "10%" }}
             alt="profile"
           />
           <div className="user-details">
             <div className="username">{postData.postedBy.name}</div>
-            <div className="timestamp">Posted 2 hours ago</div>
+            <div className="timestamp">Posted on {postData.postedOn}</div>
             <div className="location">
               <strong>{postData.location}</strong>
             </div>
@@ -103,7 +102,7 @@ export const Post = (props) => {
                   />
                   <span
                     style={{ cursor: "pointer", fontSize: "25px" }}
-                    onClick={() => addComment(postData._id,comment)}
+                    onClick={() => addComment(postData._id, comment)}
                     className="mx-3"
                   >
                     <i className="fa-solid fa-paper-plane"></i>
@@ -114,7 +113,8 @@ export const Post = (props) => {
                         return (
                           <div key={comment._id}>
                             <p>
-                              <strong>{comment.userId.name}:</strong> {comment.comment}
+                              <strong>{comment.userId.name}:</strong>{" "}
+                              {comment.comment}
                             </p>
                           </div>
                         );

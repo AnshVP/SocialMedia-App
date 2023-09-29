@@ -22,6 +22,7 @@ function App() {
   const setProgress = (progress) => {
     setBar(progress);
   };
+  
   return (
     <Toast>
       <UserData>

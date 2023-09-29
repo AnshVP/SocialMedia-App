@@ -1,20 +1,20 @@
-.sidebar {
+.notification-section {
     font-family: 'Dosis', sans-serif;
     border-radius: 0px 40px;
     box-shadow: 22px 32px 17px rgba(216, 15, 65, 0.4);
     height: 100%;
     width: 0;
-    position: fixed;
     z-index: 1;
     top: 10%;
     left: 0;
+    position: fixed;
     background-color: rgba(71, 18, 120, 0.8);
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 30px;
 }
 
-.sidebar a {
+.notification-section a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -23,11 +23,11 @@
     transition: 0.3s;
 }
 
-.sidebar a:hover {
+.notification-section a:hover {
     color: #f1f1f1;
 }
 
-.sidebar .closebtn {
+.notification-section .closebtn {
     cursor: pointer;
     position: absolute;
     top: 0;
@@ -63,11 +63,11 @@
 }
 
 @media screen and (max-height: 450px) {
-    .sidebar {
+    .notification-section {
         padding-top: 15px;
     }
 
-    .sidebar a {
+    .notification-section a {
         font-size: 18px;
     }
 }

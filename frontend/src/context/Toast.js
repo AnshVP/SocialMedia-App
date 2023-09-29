@@ -6,16 +6,14 @@ const Toast = (props) => {
   const success = (msg) =>
     Toastify({
       text: msg,
-      className: "info",
+      className: "success",
+      position: "center",
       style: {
         color:"white",
         background: "#10d52a",
         fontFamily: "'Roboto Slab', serif",
         fontSize: "20px",
-        width: "30vw",
         textAlign: "center",
-        postion: "absolute",
-        left: "35%",
         borderRadius: "3px",
       },
     }).showToast();
@@ -23,15 +21,13 @@ const Toast = (props) => {
   const error = (msg) =>
     Toastify({
       text: msg,
-      className: "info",
+      className: "warning",
+      position: "center",
       style: {
         background: "#fc1111",
         fontFamily: "'Roboto Slab', serif",
         fontSize: "20px",
-        width: "30vw",
         textAlign: "center",
-        postion: "absolute",
-        left: "35%",
         borderRadius: "3px",
       },
     }).showToast();

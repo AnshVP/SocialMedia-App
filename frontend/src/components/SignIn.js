@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../css/Sign.css";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContext } from "../context/MyContext";
 
 export const SignIn = () => {
+  const context = useContext(ToastContext);
+  const { error, success } = context;
   const [credentials, setCredentials] = useState({ name: "", password: "" });
   const navigate = useNavigate();
   const onChange = (e) => {
@@ -23,11 +26,18 @@ export const SignIn = () => {
     if (json.success) {
       localStorage.setItem("token", json.authtoken);
       navigate("/");
-      console.log("success");
+      success("Succesfully Logged In!!");
     } else {
-      console.log("fail");
+      error(json.msg);
     }
   };
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/signin");
+    } else {
+      navigate("/");
+    }
+  }, []);
   return (
     <>
       <section className="my-5">
@@ -36,7 +46,15 @@ export const SignIn = () => {
             <div className="logo" style={{ color: "white" }}>
               Let'sConnect
             </div>
-            <div style={{color:"rgb(255, 0, 162)",fontSize:"30px",fontWeight:"500"}}>Sign In</div>
+            <div
+              style={{
+                color: "rgb(255, 0, 162)",
+                fontSize: "30px",
+                fontWeight: "500",
+              }}
+            >
+              Sign In
+            </div>
             <div className="form">
               <div className="inputBox">
                 <input

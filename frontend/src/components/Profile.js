@@ -218,7 +218,7 @@ export const Profile = () => {
                         postData={data}
                         postWidth="500px"
                         font="20px"
-                        imageHeight="400px"
+                        imageHeight="57vh"
                         heart={liked}
                         likedBy={
                           data.likes.length !== 0
@@ -258,17 +258,85 @@ export const Profile = () => {
           </div>
           <div className="smallDevice">
             {allPosts.map((data) => {
+              let liked = data.likes.filter((id) => id === userData._id);
               return (
-                <div className="mx-auto my-1" key={data._id}>
-                  <img
-                    src={data.photo}
-                    alt="post"
-                    style={{
-                      width: "30vw",
-                      padding: "5px",
-                      background: "white",
+                <div key={data._id} className="mx-auto my-1">
+                  <div
+                    id={`${data._id}s1`}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      document.getElementById(
+                        `${data._id}s2`
+                      ).style.visibility = "visible";
+                      document.querySelector(".profile").style.zIndex = "300";
+                      document.body.style.overflowY = "hidden";
                     }}
-                  />
+                  >
+                    <img
+                      className="postImage"
+                      src={data.photo}
+                      alt="post"
+                      style={{
+                        width: "30vw",
+                        padding: "5px",
+                        background: "white",
+                      }}
+                    />
+                  </div>
+                  <div className="view-post" id={`${data._id}s2`}>
+                    <label
+                      className="close-button"
+                      onClick={() => {
+                        document.getElementById(
+                          `${data._id}s2`
+                        ).style.visibility = "hidden";
+                        document.querySelector(".profile").style.zIndex = "100";
+                        document.body.style.overflowY = "auto";
+                      }}
+                    >
+                      &times;
+                    </label>
+                    <div className="d-flex flex-column">
+                      <div className="mx-auto mt-5">
+                        <i
+                          className="fa-solid fa-trash fa-bounce"
+                          style={{
+                            color: "red",
+                            fontSize: "15vh",
+                            opacity: "0.6",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            deletePost(data._id);
+                            success("Post Deleted Successfully!!");
+                            document.getElementById(
+                              `${data._id}s2`
+                            ).style.visibility = "hidden";
+                            document.querySelector(".profile").style.zIndex =
+                              "100";
+                            document.body.style.overflowY = "auto";
+                          }}
+                        ></i>
+                      </div>
+                      <div className="mx-auto">
+                        <Post
+                          postData={data}
+                          postWidth="70vw"
+                          font="16px"
+                          imageHeight="45vh"
+                          heart={liked}
+                          likedBy={
+                            data.likes.length !== 0
+                              ? data.likes.length === 1
+                                ? [data.likes[0].name]
+                                : [data.likes[0].name, data.likes[1].name]
+                              : []
+                          }
+                          profilePic={data.postedBy.profilePic}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               );
             })}

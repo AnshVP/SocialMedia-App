@@ -10,8 +10,14 @@ import unlike from "../img/unlike.gif";
 export const Home = () => {
   const { getUser, userData } = useContext(UserContext);
   const { posts, getPosts, editLikes } = useContext(PostContext);
-  const { getRecommendedUsers, recommendations, addRequest, addFollower, followBack, removeRequest } =
-    useContext(FollowContext);
+  const {
+    getRecommendedUsers,
+    recommendations,
+    addRequest,
+    addFollower,
+    followBack,
+    removeRequest,
+  } = useContext(FollowContext);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -33,18 +39,138 @@ export const Home = () => {
   }, [recommendations]);
 
   function openNav() {
-    document.getElementById("mySidebar").style.width = "25%";
+    if (window.innerWidth > 1200) {
+      document.getElementById("notification-section").style.position = "fixed";
+      document.getElementById("notification-section").style.width = "340px";
+    } else if (window.innerWidth > 950) {
+      document.getElementById("notification-section").style.position = "sticky";
+      document.getElementById("notification-section").style.width = "400px";
+    } else if (window.innerWidth > 800) {
+      document.getElementById("notification-section").style.position = "sticky";
+      document.getElementById("notification-section").style.width = "300px";
+    } else if (window.innerWidth < 800) {
+      document.getElementById("notification-section").style.position = "fixed";
+      document.getElementById("notification-section").style.zIndex = "200";
+      document.getElementById("notification-section").style.width = "370px";
+      document.getElementById("notification-section").style.backdropFilter =
+        "blur(5px)";
+    }
+
     document.getElementById("main").style.display = "none";
   }
 
   function closeNav() {
-    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("notification-section").style.width = "0";
     document.getElementById("main").style.display = "block";
   }
 
   return (
     <>
       <div className="home d-flex">
+        <div id="notification-section" className="notification-section">
+          <h5 className="text-center mb-4" style={{ color: "white" }}>
+            Notifications
+          </h5>
+          <a className="closebtn" onClick={closeNav}>
+            ×
+          </a>
+          <ul
+            className="list-group list-group-flush mx-2"
+            style={{ height: "80vh" }}
+          >
+            {userData.requests ? (
+              userData.requests.length > 0 ? (
+                userData.requests.map((request) => {
+                  return (
+                    <li
+                      key={request._id}
+                      className="list-group-item my-1"
+                      style={{
+                        borderRadius: "10px 10px",
+                        backgroundColor: "#cbe1f7",
+                      }}
+                    >
+                      <div style={{ fontSize: "18px" }}>
+                        <div className="d-flex justify-content-between">
+                          <div>
+                            <img
+                              src={request.profilePic || noProfile}
+                              className="rounded-circle"
+                              width="30px"
+                              height="30px"
+                              alt="profile"
+                            />
+                          </div>
+                          <div className="mx-3">
+                            <span style={{ color: "rgb(12, 12, 199)" }}>
+                              {request.name}
+                            </span>
+                            <span> requested to follow you</span>
+                          </div>
+                          <div>
+                            <button
+                              className="btn btn-primary btn-sm mx-auto"
+                              onClick={() =>
+                                userData.followers.filter(
+                                  (follower) => follower.name === request.name
+                                ).length === 0
+                                  ? addFollower(request._id)
+                                  : userData.followings.filter(
+                                      (following) =>
+                                        following.name === request.name
+                                    ).length === 0
+                                  ? followBack(request._id)
+                                  : removeRequest(request._id)
+                              }
+                            >
+                              {userData.followers.filter((follower) => {
+                                return follower._id === request._id;
+                              }).length === 0
+                                ? "Accept"
+                                : userData.followings.filter(
+                                    (following) =>
+                                      following.name === request.name
+                                  ).length === 0
+                                ? "FollowBack"
+                                : "confirm"}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })
+              ) : (
+                <li
+                  className="list-group-item my-1 text-center"
+                  style={{
+                    borderRadius: "10px 10px",
+                    backgroundColor: "#cbe1f7",
+                  }}
+                >
+                  No Notifications Available
+                </li>
+              )
+            ) : (
+              ""
+            )}
+          </ul>
+        </div>
+
+        <div
+          id="main"
+          style={
+            window.innerWidth < 800
+              ? { position: "absolute", top: "0%", left: "50vw" }
+              : {}
+          }
+        >
+          <button className="openbtn" onClick={openNav}>
+            {window.innerWidth >= 1200
+              ? "☰ Notification Section"
+              : "☰ Notifications"}
+          </button>
+        </div>
         <div className="mx-auto" style={{ zIndex: "100" }}>
           {posts.length !== 0
             ? posts.map((data) => {
@@ -138,9 +264,10 @@ export const Home = () => {
             : ""}
         </div>
         <div
-          className="card text-white bg-dark mb-3 "
+          className="recommention-section card text-white bg-dark mb-3 "
           style={{
-            maxWidth: "25%",
+            height: "100vh",
+            width: "340px",
             position: "fixed",
             right: "0px",
             fontFamily: "'Dosis', sans-serif",
@@ -149,10 +276,7 @@ export const Home = () => {
           <h5 className="card-header mx-auto mt-3">Recomendations</h5>
 
           <div className="card-body">
-            <ul
-              className="list-group list-group-flush"
-              style={{ height: "80vh", width:"23vw" }}
-            >
+            <ul className="list-group list-group-flush">
               {recommendations.length
                 ? recommendations.map((user) => {
                     return (
@@ -208,91 +332,6 @@ export const Home = () => {
                 : ""}
             </ul>
           </div>
-        </div>
-
-        <div id="mySidebar" className="sidebar">
-          <h5 className="text-center mb-4" style={{ color: "white" }}>
-            Notifications
-          </h5>
-          <a className="closebtn" onClick={closeNav}>
-            ×
-          </a>
-          <ul
-            className="list-group list-group-flush mx-2"
-            style={{ height: "80vh" }}
-          >
-            {userData.requests ? (
-              userData.requests.map((request) => {
-                return (
-                  <li
-                    key={request._id}
-                    className="list-group-item my-1"
-                    style={{
-                      borderRadius: "10px 10px",
-                      backgroundColor: "#cbe1f7",
-                    }}
-                  >
-                    <div style={{ fontSize: "18px" }}>
-                      <div className="d-flex justify-content-between">
-                        <div>
-                          <img
-                            src={request.profilePic || noProfile}
-                            className="rounded-circle"
-                            width="30px"
-                            height="30px"
-                            alt="profile"
-                          />
-                        </div>
-                        <div className="mx-3">
-                          <span style={{ color: "rgb(12, 12, 199)" }}>
-                            {request.name}
-                          </span>
-                          <span> requested to follow you</span>
-                        </div>
-                        <div>
-                          <button
-                            className="btn btn-primary btn-sm mx-auto"
-                            onClick={() =>
-                              userData.followers.filter(
-                                (follower) => follower.name === request.name
-                              ).length === 0
-                                ? addFollower(request._id)
-                                : userData.followings.filter(
-                                  (following) => following.name === request.name
-                                ).length === 0 ? followBack(request._id) : removeRequest(request._id)
-                            }
-                          >
-                            {userData.followers.filter((follower) => {
-                              return follower._id === request._id;
-                            }).length === 0
-                              ? "Accept" : userData.followings.filter(
-                                (following) => following.name === request.name
-                              ).length === 0 ? "FollowBack" : "confirm" }
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                );
-              })
-            ) : (
-              <li
-                className="list-group-item my-1"
-                style={{
-                  borderRadius: "10px 10px",
-                  backgroundColor: "#cbe1f7",
-                }}
-              >
-                No Notifications Available
-              </li>
-            )}
-          </ul>
-        </div>
-
-        <div id="main">
-          <button className="openbtn" onClick={openNav}>
-            ☰ Notification Section
-          </button>
         </div>
       </div>
     </>

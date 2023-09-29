@@ -47,8 +47,18 @@
         height: 100px
     }
 
+    .recommention-section{
+        display: block;
+    }
+    
 }
 
+@media only screen and (max-width: 1200px){
+    .recommention-section{
+        display: none;
+    }
+
+}
 @media only screen and (max-width: 900px) {
     .profile {
         font-size: 21px;
@@ -59,7 +69,7 @@
         flex-wrap: wrap;
     }
 
-    .smallDevice img {
+    .smallDevice .postImage {
         height: 30vh;
     }
 
@@ -91,6 +101,11 @@
         width: 100px;
         height: 100px;
     }
+
+    .result-body{
+        width:85vw !important
+    }
+    
 }
 
 @media only screen and (max-width: 600px) {
@@ -102,7 +117,7 @@
         border-radius: 0 0 80px 80px
     }
 
-    .smallDevice img {
+    .smallDevice .postImage {
         height: 20vh;
     }
 
@@ -137,4 +152,5 @@
         width: 60px;
         height: 60px;
     }
+
 }
